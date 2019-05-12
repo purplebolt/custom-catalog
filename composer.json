@@ -1,0 +1,23 @@
+{
+  "name": "purplebolt/custom-catalog",
+  "description": "Youssuph Magento2 module CustomCatalog",
+  "require": {
+    "php": ">=7.1.6",
+	"magento/module-message-queue": ">=100.3.1"
+  },  
+  "license": "MIT",
+  "authors": [
+	{
+		"name": "Akinbami Youssuph", 
+		"role": "developer"
+	}
+  ],
+  "autoload": {
+    "files": [
+      "registration.php"
+    ],
+    "psr-4": {
+      "Youssuph\\CustomCatalog\\": ""
+    }
+  }
+}

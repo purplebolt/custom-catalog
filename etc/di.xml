@@ -1,0 +1,74 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * di
+ * @copyright Copyright © 2019 Youssuph Inc.. All rights reserved.
+ * @author    purplescroll@gmail.com
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <!-- Temporal fix to 2.1 problem with eav attributes: https://github.com/magento/magento2/issues/5339 -->
+
+    <preference for="Youssuph\CustomCatalog\Api\Data\ProductDataInterface" type="Youssuph\CustomCatalog\Model\Data\ProductData" />
+    <preference for="Youssuph\CustomCatalog\Api\ProductRepositoryInterface" type="Youssuph\CustomCatalog\Model\ProductRepository" />
+
+    <type name="Magento\Eav\Model\Entity\AttributeCache">
+        <arguments>
+            <argument name="unsupportedTypes" xsi:type="array">
+                <item name="youssuph_customcat" xsi:type="string">youssuph_customcat</item>
+            </argument>
+        </arguments>
+    </type>
+    <!-- end temporal fix -->
+    <type name="Youssuph\CustomCatalog\UI\Component\Listing\DataProvider">
+        <arguments>
+            <argument name="collection" xsi:type="object" shared="false">Youssuph\CustomCatalog\Model\ResourceModel\Customcat\Collection</argument>
+            <argument name="filterPool" xsi:type="object" shared="false">RefGridFilterPool</argument>
+        </arguments>
+    </type>
+    <virtualType name="RefGridFilterPool" type="Magento\Framework\View\Element\UiComponent\DataProvider\FilterPool">
+        <arguments>
+            <argument name="appliers" xsi:type="array">
+                <item name="regular" xsi:type="object">Magento\Framework\View\Element\UiComponent\DataProvider\RegularFilter</item>
+                <item name="fulltext" xsi:type="object">Magento\Framework\View\Element\UiComponent\DataProvider\FulltextFilter</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
+        <arguments>
+            <argument name="collections" xsi:type="array">
+                <item name="youssuph_customcatalog_customcat_listing_data_source" xsi:type="string">Youssuph\CustomCatalog\Model\ResourceModel\Customcat\Grid\Collection</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Youssuph\CustomCatalog\Model\ResourceModel\Customcat\Grid\Collection">
+        <arguments>
+            <argument name="eventPrefix" xsi:type="string">youssuph_customcatalog_customcat_grid_collection</argument>
+            <argument name="eventObject" xsi:type="string">youssuph_customcatalog_customcat_grid_collection</argument>
+            <argument name="resourceModel" xsi:type="string">Youssuph\CustomCatalog\Model\ResourceModel\Customcat</argument>
+        </arguments>
+    </type>
+
+    <type name="Magento\Framework\EntityManager\MetadataPool">
+        <arguments>
+            <argument name="metadata" xsi:type="array">
+                <item name="Youssuph\CustomCatalog\Api\Data\ProductDataInterface" xsi:type="array">
+                    <item name="entityTableName" xsi:type="string">youssuph_customcat_entity</item>
+                    <item name="eavEntityType" xsi:type="string">youssuph_customcat</item>
+                    <item name="identifierField" xsi:type="string">entity_id</item>
+					<item name="entityContext" xsi:type="array">
+					   <item name="store" xsi:type="string">Magento\Store\Model\StoreScopeProvider</item>
+				    </item>
+                </item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Magento\Framework\EntityManager\HydratorPool">
+        <arguments>
+            <argument name="hydrators" xsi:type="array">
+                <item name="Youssuph\CustomCatalog\Api\Data\ProductDataInterface" xsi:type="string">Magento\Framework\EntityManager\AbstractModelHydrator</item>
+            </argument>
+        </arguments>
+    </type>
+
+</config>
